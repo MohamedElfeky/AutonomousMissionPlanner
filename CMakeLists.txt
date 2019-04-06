@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
-find_package(Qt5 COMPONENTS Core Widgets)
+find_package(Qt5 COMPONENTS Core Widgets Test)
 
 if (Qt5Widgets_FOUND)
     if (Qt5Widgets_VERSION VERSION_LESS 5.6.0)
@@ -26,7 +26,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 option(AMP_USE_ROS "Build ROS components")
 
 if(AMP_USE_ROS)
-    find_package(catkin REQUIRED COMPONENTS roscpp asv_msgs)
+    find_package(catkin REQUIRED COMPONENTS roscpp marine_msgs geographic_visualization_msgs)
     include_directories(${catkin_INCLUDE_DIRS})
     add_definitions(-DAMP_ROS)
 endif()
@@ -51,12 +51,18 @@ set(SOURCES
     missionitem.cpp
     platformdetails.cpp
     backgrounddetails.cpp
-    vectordataset.cpp
+    vector/vectordataset.cpp
     group.cpp
-    point.cpp
-    linestring.cpp
-    polygon.cpp
+    vector/point.cpp
+    vector/linestring.cpp
+    vector/polygon.cpp
     geographicsmissionitem.cpp
+    modeltest.cpp
+    surveyarea.cpp
+    measuringtool.cpp
+    behavior.cpp
+    behaviordetails.cpp
+    rosdetails.cpp
 )
 
 set(HEADERS
@@ -77,17 +83,22 @@ set(HEADERS
     missionitem.h
     platformdetails.h
     backgrounddetails.h
-    vectordataset.h
+    vector/vectordataset.h
     group.h
-    point.h
-    linestring.h
-    polygon.h
+    vector/point.h
+    vector/linestring.h
+    vector/polygon.h
     geographicsmissionitem.h
+    surveyarea.h
+    measuringtool.h
+    behavior.h
+    behaviordetails.h
+    rosdetails.h
 )
 
 if(AMP_USE_ROS)
-    list(APPEND SOURCES rosnode.cpp rosnodedetails.cpp)
-    list(APPEND HEADERS rosnode.h rosnodedetails.h)
+    list(APPEND SOURCES roslink.cpp )
+    list(APPEND HEADERS roslink.h)
 endif()
 
 set ( RESOURCES
@@ -96,7 +107,7 @@ set ( RESOURCES
 
 add_executable(AutonomousMissionPlanner ${HEADERS} ${SOURCES} ${RESOURCES})
 
-qt5_use_modules(AutonomousMissionPlanner Widgets Positioning Svg)
+qt5_use_modules(AutonomousMissionPlanner Widgets Positioning Svg Test)
 
 target_link_libraries(AutonomousMissionPlanner ${QT_LIBRARIES} ${GDAL_LIBRARY} ${catkin_LIBRARIES})
 

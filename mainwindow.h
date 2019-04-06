@@ -18,9 +18,11 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void open(QString const &fname);
 public slots:
 
     void setCurrent(QModelIndex &index);
+    void onROSConnected(bool connected);
 
 private slots:
     void on_actionOpen_triggered();
@@ -31,16 +33,19 @@ private slots:
     void on_actionSaveAs_triggered();
     void on_actionOpenBackground_triggered();
     void on_actionSurveyPattern_triggered();
+    void on_actionSurveyArea_triggered();
     void on_actionPlatform_triggered();
     void on_actionOpenGeometry_triggered();
-    void on_actionROS_Node_triggered();
-
+    void on_actionGroup_triggered();
+    void on_actionImport_triggered();
+    void on_actionBehavior_triggered();
 
 private:
     Ui::MainWindow *ui;
     AutonomousVehicleProject *project;
 
     void exportHypack() const;
+    void exportMissionPlan() const;
     void sendToROS() const;
 };
 

@@ -11,11 +11,8 @@
 #include "surveypatterndetails.h"
 #include "platform.h"
 #include "platformdetails.h"
-
-#ifdef AMP_ROS
-#include "rosnode.h"
-#include "rosnodedetails.h"
-#endif
+#include "behavior.h"
+#include "behaviordetails.h"
 
 #include <QDebug>
 
@@ -31,11 +28,8 @@ DetailsView::DetailsView(QWidget *parent) : QWidget(parent), m_project(nullptr),
     surveyPatternDetails->hide();
     platformDetails = new PlatformDetails(this);
     platformDetails->hide();
-    
-#ifdef AMP_ROS
-    rosNodeDetails = new ROSNodeDetails(this);
-    rosNodeDetails->hide();
-#endif
+    behaviorDetails = new BehaviorDetails(this);
+    behaviorDetails->hide();
 }
 
 QSize DetailsView::sizeHint() const
@@ -67,8 +61,7 @@ void DetailsView::setCurrentWidget(QWidget *widget)
 
 void DetailsView::onCurrentItemChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-    QVariant item = m_project->model()->data(current,Qt::UserRole+1);
-    MissionItem* mi = reinterpret_cast<MissionItem*>(item.value<quintptr>());
+    MissionItem* mi = m_project->itemFromIndex(current);
     qDebug() << "metaobject class name: " << mi->metaObject()->className();
     QString itemType = mi->metaObject()->className();
 
@@ -102,14 +95,12 @@ void DetailsView::onCurrentItemChanged(const QModelIndex &current, const QModelI
         setCurrentWidget(platformDetails);
         platformDetails->setPlatform(p);
     }
-#ifdef AMP_ROS
-    else if (itemType == "ROSNode")
+    else if (itemType == "Behavior")
     {
-        ROSNode *r = qobject_cast<ROSNode*>(mi);
-        setCurrentWidget(rosNodeDetails);
-        rosNodeDetails->setROSNode(r);
+        Behavior *b = qobject_cast<Behavior*>(mi);
+        setCurrentWidget(behaviorDetails);
+        behaviorDetails->setBehavior(b);
     }
-#endif
     else
         setCurrentWidget(nullptr);
     m_project->setCurrent(current);

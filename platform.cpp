@@ -1,7 +1,7 @@
 #include "platform.h"
 #include <QJsonObject>
 
-Platform::Platform(QObject *parent) : MissionItem(parent), m_speed(0.0)
+Platform::Platform(MissionItem *parent) : MissionItem(parent), m_speed(0.0)
 {
 
 }
@@ -16,6 +16,11 @@ void Platform::write(QJsonObject &json) const
 {
     json["type"]="Platform";
     json["speed"]=m_speed;
+}
+
+void Platform::writeToMissionPlan(QJsonArray& navArray) const
+{
+    
 }
 
 double Platform::speed() const

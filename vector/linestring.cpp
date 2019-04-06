@@ -2,7 +2,7 @@
 #include <QPainter>
 #include "point.h"
 
-LineString::LineString(QObject* parent, QGraphicsItem* parentItem):GeoGraphicsMissionItem(parent, parentItem)
+LineString::LineString(MissionItem* parent):GeoGraphicsMissionItem(parent)
 {
 
 }
@@ -18,6 +18,11 @@ void LineString::write(QJsonObject& json) const
 {
 
 }
+
+void LineString::writeToMissionPlan(QJsonArray& navArray) const
+{
+}
+
 
 void LineString::read(const QJsonObject& json)
 {

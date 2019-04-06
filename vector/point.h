@@ -9,7 +9,7 @@ class Point : public GeoGraphicsMissionItem
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
 public:
-    explicit Point(QObject *parent = 0, QGraphicsItem *parentItem =0);
+    explicit Point(MissionItem *parent = 0);
     
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -18,6 +18,7 @@ public:
     void setLocation(QGeoCoordinate const &location);
     
     void write(QJsonObject &json) const override;
+    void writeToMissionPlan(QJsonArray & navArray) const override;
     void read(const QJsonObject &json) override;
 
     int type() const override {return PointType;}

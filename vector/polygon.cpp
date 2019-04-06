@@ -1,7 +1,8 @@
 #include "polygon.h"
 #include <QPainter>
+#include <QDebug>
 
-Polygon::Polygon(QObject* parent, QGraphicsItem* parentItem):GeoGraphicsMissionItem(parent, parentItem)
+Polygon::Polygon(MissionItem* parent):GeoGraphicsMissionItem(parent)
 {
 }
 
@@ -35,6 +36,11 @@ void Polygon::read(const QJsonObject& json)
 void Polygon::write(QJsonObject& json) const
 {
 }
+
+void Polygon::writeToMissionPlan(QJsonArray& navArray) const
+{
+}
+
 
 QPainterPath Polygon::shape() const
 {
@@ -137,5 +143,4 @@ void Polygon::addInteriorRing()
 {
     m_interiorRings.append(QList<LocationPosition>());
 }
-
 

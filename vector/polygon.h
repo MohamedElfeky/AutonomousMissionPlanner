@@ -9,13 +9,14 @@ class Polygon : public GeoGraphicsMissionItem
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
 public:
-    explicit Polygon(QObject *parent = 0, QGraphicsItem *parentItem =0);
+    explicit Polygon(MissionItem *parent = 0);
     
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QPainterPath shape() const override;
     
     void write(QJsonObject &json) const override;
+    void writeToMissionPlan(QJsonArray & navArray) const override;
     void read(const QJsonObject &json) override;
     
     void addExteriorPoint(QGeoCoordinate const &location);
@@ -25,8 +26,9 @@ public:
     void updateBBox();
     
     int type() const override {return PolygonType;}
+    
 public slots:
-    void updateProjectedPoints();
+    void updateProjectedPoints() override;
 
 private:
     QList<LocationPosition> m_exteriorRing;
